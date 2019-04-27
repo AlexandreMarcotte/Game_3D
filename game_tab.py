@@ -26,7 +26,8 @@ class GameTab:
         self.square_size = 3
 
         self.w = self.init_win()
-        self.add_shape()
+        self.add_snake()
+        self.add_brain_lines()
         self.dock.addWidget(self.w, 1, 0)
 
         self.timer_effect = self.init_timer()
@@ -41,10 +42,10 @@ class GameTab:
         w.setCameraPosition(distance=220, azimuth=-90, elevation=90)
         return w
 
-    def add_shape(self):
+    def add_snake(self):
         self.snake = []
         # Create the snake and it's moving pattern
-        for i in range(self.snake_len):
+        for i in range(-self.snake_len, 0):
             shape = square(pos=(i*self.square_size, 0, 0), s=(
                     self.square_size, self.square_size, self.square_size))
             self.snake.append(shape)
@@ -55,6 +56,20 @@ class GameTab:
         g.scale(self.square_size, self.square_size, self.square_size)
         self.w.addItem(g)
 
+    def add_brain_lines(self):
+        self.lines = []
+        for i in range(-5, 6):
+            for j in range(-5, 6):
+                top_pos = [i*self.square_size, j*self.square_size, 10]
+                self.lines.append(gl.GLLinePlotItem(
+                        pos=np.array([[-1.5, 1.5, 0], top_pos]), width=0.8,
+                        color=np.array([[200, 200, 200, 0.5], [0, 0, 200, 0.5]])))
+                self.w.addItem(self.lines[-1])
+
+    def update_brain_lines(self, translate_arr):
+        for line in self.lines:
+            line.translate(*translate_arr)
+
     def init_timer(self):
         timer_effect = QtCore.QTimer()
         timer_effect.timeout.connect(self.update_display)
@@ -63,19 +78,28 @@ class GameTab:
 
     def update_display(self):
         self.keys_pressed.append(self.key_pressed)
-        for shape, key_pressed in zip(self.snake, self.keys_pressed):
+        for i, (shape, key_pressed) in enumerate(zip(self.snake, self.keys_pressed)):
             if key_pressed == 'l':
-                shape.translate(self.square_size, 0, 0)
+                translate_arr = (self.square_size, 0, 0)
+                shape.translate(*translate_arr)
                 # self.x_pos += 0.2
             if key_pressed == 'j':
-                shape.translate(-self.square_size, 0, 0)
+                translate_arr = (-self.square_size, 0, 0)
+                shape.translate(*translate_arr)
                 # self.x_pos -= 0.2
             if key_pressed == 'i':
-                shape.translate(0, self.square_size, 0)
+                translate_arr = (0, self.square_size, 0)
+                shape.translate(*translate_arr)
                 # self.y_pos += 0.3
             if key_pressed == 'k':
-                shape.translate(0, -self.square_size, 0)
+                translate_arr = (0, -self.square_size, 0)
+                shape.translate(*translate_arr)
                 # self.y_pos -= 0.3
+            # else:
+            #     translate_arr = (0, 0, 0)
+            # Head of the snake
+            if i == self.snake_len-1 and key_pressed in ['l', 'i', 'j', 'k']:
+                self.update_brain_lines(translate_arr)
 
     def on_press(self, key):
         try:

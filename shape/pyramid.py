@@ -12,7 +12,8 @@ def pyramid(s=(1,1,1), pos=(0, 0, 0)):
 
     verts = np.array([
         np.array([0.5, 0.5, 1]),
-        np.array([0, 0, 0]), np.array([0, 1, 0]), np.array([1, 1, 0]), np.array([1, 0, 0])],
+        np.array([0, 0, 0]), np.array([0, 1, 0]),
+        np.array([1, 1, 0]), np.array([1, 0, 0])],
         dtype=float)
 
     # Resize:
@@ -28,16 +29,12 @@ def pyramid(s=(1,1,1), pos=(0, 0, 0)):
         v[2] += z
 
     faces = np.array([
-        np.array([0, 1, 2]), np.array([0, 3, 2]), np.array([0, 4, 3]), np.array([0, 1, 4])])
+        np.array([0, 1, 2]), np.array([0, 3, 2]),
+        np.array([0, 4, 3]), np.array([0, 1, 4])])
 
     pyramid = gl.MeshData(vertexes=verts, faces=faces)
-    # cube = gl.MeshData.sphere(rows=2, cols=3)
     pyramid = gl.GLMeshItem(
         meshdata=pyramid, color=(0, 200, 0, 0.5), shader='shaded')
-
-    # md = gl.MeshData.sphere(rows=20, cols=30)
-    # m4 = gl.GLMeshItem(meshdata=md, smooth=True, shader='shaded', glOptions='opaque')
-    # w.addItem(m4)
 
     return pyramid
 
