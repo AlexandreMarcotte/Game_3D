@@ -24,7 +24,7 @@ class GameWidget(QWidget):
 
     def init_docks(self):
         self.eeg_layout, self.eeg_dock = self.create_layout(
-                'Game', 'left', size=(5, 15))
+                'Snake Game', 'right', size=(5, 15))
 
     def create_layout(
             self, dock_name, pos, related_dock=None, size=(1, 1),
