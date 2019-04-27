@@ -6,6 +6,7 @@ from functools import partial
 # -- My packages --
 import numpy as np
 from game_components.snake import Snake
+from game_components.apple import Apple
 
 
 class GameTab:
@@ -26,6 +27,9 @@ class GameTab:
 
     def add_snake(self):
         self.snake = Snake(self.w, self.square_size)
+
+    def add_apple(self):
+        self.apple = Apple(self.w, self.square_size)
 
     def add_start_button(self):
         b_start = QtGui.QPushButton('')

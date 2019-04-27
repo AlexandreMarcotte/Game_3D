@@ -8,7 +8,9 @@ from PyQt5 import QtGui, QtCore
 from collections import deque
 # -- My Packages --
 from game_components.brain import Brain
+from game_components.apple import Apple
 from extra_function.keyboard_listener import KeyboardListener
+import numpy as np
 
 
 class Snake:
@@ -19,18 +21,21 @@ class Snake:
         self.kb_listener.start()
 
         self.len = 20
+        self.head_pos = np.array([0, 0, 0])
         self.body_mvts = deque([], maxlen=self.len)
         self.body_mvts.append(self.kb_listener.key_pressed)
         self.body = []
         self.body_mvts_dict = {
-            'l': (self.square_size, 0, 0),
-            'j': (-self.square_size, 0, 0),
-            'i': (0, self.square_size, 0),
-            'k': (0, -self.square_size, 0)}
+                'l': (self.square_size, 0, 0),
+                'j': (-self.square_size, 0, 0),
+                'i': (0, self.square_size, 0),
+                'k': (0, -self.square_size, 0)}
+        self.previous_body_mvt = 'l'
 
         self.add_to_window(win)
         # Brain
         self.brain = Brain(win, square_size)
+        self.apple = Apple(win, self.square_size)
 
     def add_to_window(self, win):
         # Create the snake and it's moving pattern
@@ -38,12 +43,11 @@ class Snake:
             if i == 0:
                 body_type = cube
             else:
-                body_type = square
+                body_type = pyramid
 
-            body_square = body_type(pos=(i*self.square_size, 0, 0),
-                                    s=(self.square_size,
-                                    self.square_size,
-                                    self.square_size))
+            body_square = body_type(
+                    pos=(i*self.square_size, 0, 0),
+                    s=(self.square_size, self.square_size, self.square_size))
             self.body.append(body_square)
             win.addItem(body_square)
             self.body_mvts.append(self.kb_listener.key_pressed)
@@ -68,6 +72,14 @@ class Snake:
             body_part.translate(*translate_arr)
             # Head of the snake
             if i == self.len-1 and body_mvt in ['l', 'i', 'j', 'k']:
-                self.brain.update_brain_lines(translate_arr)
+                self.brain.translate(translate_arr)
+                self.brain.update_neurons_weight()
 
+                if body_mvt != self.previous_body_mvt:
+                    # self.brain.rotate(body_mvt, self.head_pos)
+                    self.previous_body_mvt = body_mvt
 
+        self.head_pos += translate_arr
+        # print(self.head_pos)
+
+        self.apple.rotate()
