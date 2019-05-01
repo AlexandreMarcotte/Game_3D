@@ -1,5 +1,5 @@
 # Shape
-from shape.cube import cube
+from shape.cube import Cube
 from shape.pyramid import pyramid
 from shape.square import square
 from shape.triangle import triangle
@@ -40,15 +40,15 @@ class Snake:
         # Create the snake and it's moving pattern
         for i in range(-self.len, 0):
             if i == 0:
-                body_type = cube
+                body_type = Cube
             else:
-                body_type = pyramid
+                body_type = Cube
 
             body_square = body_type(
                     pos=(i*self.square_size, 0, 0),
                     s=(self.square_size, self.square_size, self.square_size))
-            self.body.append(body_square)
-            win.addItem(body_square)
+            self.body.append(body_square.mesh_item)
+            win.addItem(body_square.mesh_item)
             self.body_mvts.append(self.kb_listener.key_pressed)
 
     def add_mvt_to_body(self):

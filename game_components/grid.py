@@ -15,7 +15,5 @@ class Grid:
         win.addItem(g)
 
     def add_walls(self, win, square_size):
-        for j in range(100):
-            for i in range(10):
-                brick = cube(pos=(i, j, 10), s=(square_size, square_size, square_size))
-                win.addItem(brick)
+        brick = cube(pos=(1, 1, 5), s=(square_size, square_size, square_size))
+        win.addItem(brick)
