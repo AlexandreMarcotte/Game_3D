@@ -38,7 +38,7 @@ def cube(s=(1,1,1), pos=(0, 0, 0)):
     cube = gl.MeshData(vertexes=verts, faces=faces)
     # cube = gl.MeshData.sphere(rows=2, cols=3)
     cube = gl.GLMeshItem(
-        meshdata=cube, color=(0, 200, 0, 10), shader='shaded')
+            meshdata=cube, color=(0, 200, 0, 10), shader='shaded')
 
     # md = gl.MeshData.sphere(rows=20, cols=30)
     # m4 = gl.GLMeshItem(meshdata=md, smooth=True, shader='shaded', glOptions='opaque')

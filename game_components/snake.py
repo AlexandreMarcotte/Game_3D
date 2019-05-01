@@ -35,7 +35,6 @@ class Snake:
         self.add_to_window(win)
         # Brain
         self.brain = Brain(win, square_size)
-        self.apple = Apple(win, self.square_size)
 
     def add_to_window(self, win):
         # Create the snake and it's moving pattern
@@ -51,10 +50,6 @@ class Snake:
             self.body.append(body_square)
             win.addItem(body_square)
             self.body_mvts.append(self.kb_listener.key_pressed)
-
-        g = gl.GLGridItem(size=QtGui.QVector3D(50, 50, 1))
-        g.scale(self.square_size, self.square_size, self.square_size)
-        win.addItem(g)
 
     def add_mvt_to_body(self):
         self.body_mvts.append(self.kb_listener.key_pressed)
@@ -80,6 +75,3 @@ class Snake:
                     self.previous_body_mvt = body_mvt
 
         self.head_pos += translate_arr
-        # print(self.head_pos)
-
-        self.apple.rotate()

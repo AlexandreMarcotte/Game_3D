@@ -4,9 +4,9 @@ import pyqtgraph.opengl as gl
 from PyQt5 import QtGui, QtCore
 from functools import partial
 # -- My packages --
-import numpy as np
 from game_components.snake import Snake
 from game_components.apple import Apple
+from game_components.grid import Grid
 
 
 class GameTab:
@@ -15,6 +15,8 @@ class GameTab:
         self.square_size = 3
         self.w = self.init_win()
         self.add_snake()
+        self.add_apple()
+        self.add_grid()
         self.dock.addWidget(self.w, 1, 0)
 
         self.timer_effect = self.init_timer()
@@ -30,6 +32,9 @@ class GameTab:
 
     def add_apple(self):
         self.apple = Apple(self.w, self.square_size)
+
+    def add_grid(self):
+        self.grid = Grid(self.w, self.square_size)
 
     def add_start_button(self):
         b_start = QtGui.QPushButton('')
